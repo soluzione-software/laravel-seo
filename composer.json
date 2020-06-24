@@ -1,0 +1,30 @@
+{
+  "name": "soluzione-software/laravel-seo",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Yuriy Martini",
+      "email": "y.martini@soluzionesoftware.com",
+      "homepage": "https://github.com/yuriy-martini",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "illuminate/database": "^5.8|^6.0",
+    "illuminate/support": "^5.8|^6.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "SoluzioneSoftware\\SEO\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "SoluzioneSoftware\\SEO\\ServiceProvider"
+      ]
+    }
+  }
+}
