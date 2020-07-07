@@ -21,13 +21,13 @@ class CreateSeoDataTable extends Migration
 
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
-            $table->json('meta_keywords')->default('[]');
+            $table->json('meta_keywords')->nullable();
 
-            $table->string('open_graph_title')->nullable();
+            $table->string('open_graph_title');
             $table->string('open_graph_description')->nullable();
-            $table->json('open_graph_images')->default('[]');
+            $table->json('open_graph_images')->nullable();
 
-            $table->string('twitter_title')->nullable();
+            $table->string('twitter_title');
             $table->string('twitter_description')->nullable();
             $table->text('twitter_image')->nullable();
             $table->text('twitter_image_alt')->nullable();

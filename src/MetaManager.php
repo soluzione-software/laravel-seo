@@ -40,7 +40,7 @@ class MetaManager
 
     public function getTitle(): ?string
     {
-        return $this->title;
+        return ($this->seoable ? $this->seoable->getMetaTitle() : null) ?: $this->title;
     }
 
     public function setTitle(string $title)
@@ -51,7 +51,7 @@ class MetaManager
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return ($this->seoable ? $this->seoable->getMetaDescription() : null) ?: $this->description;
     }
 
     public function setDescription(string $content)
@@ -62,12 +62,13 @@ class MetaManager
 
     public function hasDescription(): bool
     {
-        return !empty($this->description);
+        return !empty($this->getDescription());
     }
 
     public function getKeywords(): array
     {
-        return $this->keywords;
+        $seoableKeywords = $this->seoable ? $this->seoable->getMetaKeywords() : [];
+        return count($seoableKeywords) ? $seoableKeywords : $this->keywords;
     }
 
     public function setKeywords(array $keywords)
@@ -78,12 +79,12 @@ class MetaManager
 
     public function getKeywordsAsString(): string
     {
-        return implode(',', $this->keywords);
+        return implode(',', $this->getKeywords());
     }
 
     public function hasKeywords(): bool
     {
-        return count($this->keywords) > 0;
+        return count($this->getKeywords()) > 0;
     }
 
     public function getCanonical(): ?string

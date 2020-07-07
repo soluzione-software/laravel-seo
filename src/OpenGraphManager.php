@@ -57,7 +57,8 @@ class OpenGraphManager
 
     public function getTitle(): string
     {
-        return $this->title;
+        $seoableTitle = $this->seoable ? $this->seoable->getOpenGraphTitle() : null;
+        return $seoableTitle ? $seoableTitle : $this->title;
     }
 
     public function setTitle(string $title): self
@@ -68,7 +69,7 @@ class OpenGraphManager
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return ($this->seoable ? $this->seoable->getOpenGraphDescription() : null) ?: $this->description;
     }
 
     public function setDescription(string $description): self
@@ -79,12 +80,13 @@ class OpenGraphManager
 
     public function hasDescription(): bool
     {
-        return !empty($this->description);
+        return !empty($this->getDescription());
     }
 
     public function getImages(): array
     {
-        return $this->images;
+        $seoableImages = $this->seoable ? $this->seoable->getOpenGraphImages() : [];
+        return count($seoableImages) ? $seoableImages : $this->images;
     }
 
     public function setImages(string $images): self
@@ -95,7 +97,7 @@ class OpenGraphManager
 
     public function hasImages(): bool
     {
-        return count($this->images) > 0;
+        return count($this->getImages()) > 0;
     }
 
     public function getUrl(): string

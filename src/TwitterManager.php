@@ -39,7 +39,8 @@ class TwitterManager
 
     public function getTitle(): string
     {
-        return $this->title;
+        $seoableTitle = $this->seoable ? $this->seoable->getTwitterTitle() : null;
+        return $seoableTitle ? $seoableTitle : $this->title;
     }
 
     public function setTitle(string $title): self
@@ -50,7 +51,7 @@ class TwitterManager
 
     public function getDescription(): ?string
     {
-        return $this->description;
+        return ($this->seoable ? $this->seoable->getTwitterDescription() : null) ?: $this->description;
     }
 
     public function setDescription(string $description): self
@@ -61,12 +62,12 @@ class TwitterManager
 
     public function hasDescription(): bool
     {
-        return !empty($this->description);
+        return !empty($this->getDescription());
     }
 
     public function getImage(): ?string
     {
-        return $this->image;
+        return ($this->seoable ? $this->seoable->getTwitterImage() : null) ?: $this->image;
     }
 
     public function setImage(string $image): self
@@ -77,12 +78,12 @@ class TwitterManager
 
     public function hasImage(): bool
     {
-        return !empty($this->image);
+        return !empty($this->getImage());
     }
 
     public function getImageAlt(): ?string
     {
-        return $this->imageAlt;
+        return ($this->seoable ? $this->seoable->getTwitterImageAlt() : null) ?: $this->imageAlt;
     }
 
     public function setImageAlt(string $imageAlt): self
@@ -93,6 +94,6 @@ class TwitterManager
 
     public function hasImageAlt(): bool
     {
-        return !empty($this->imageAlt);
+        return !empty($this->getImageAlt());
     }
 }
