@@ -28,6 +28,10 @@ class ServiceProvider extends BaseServiceProvider
 
     private function bootMigrations()
     {
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => App::databasePath('migrations')
+        ], ['migrations', 'seo', 'seo-migrations']);
+
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations/2020_01_01_000000_create_seo_data_table.php');
     }
 
