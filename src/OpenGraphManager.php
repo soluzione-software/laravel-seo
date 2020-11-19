@@ -89,7 +89,7 @@ class OpenGraphManager
         return count($seoableImages) ? $seoableImages : $this->images;
     }
 
-    public function setImages(string $images): self
+    public function setImages(array $images): self
     {
         $this->images = $images;
         return $this;
