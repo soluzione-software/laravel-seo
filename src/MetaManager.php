@@ -2,6 +2,7 @@
 
 namespace SoluzioneSoftware\SEO;
 
+use Illuminate\Support\Facades\Config;
 use SoluzioneSoftware\SEO\Traits\HasSeoable;
 
 class MetaManager
@@ -40,7 +41,20 @@ class MetaManager
 
     public function getTitle(): ?string
     {
-        return ($this->seoable ? $this->seoable->getMetaTitle() : null) ?: $this->title;
+        $title = ($this->seoable ? $this->seoable->getMetaTitle() : null) ?: $this->title;
+
+        $prefix = Config::get('seo.title.prefix');
+        $suffix = Config::get('seo.title.suffix');
+
+        if (!empty($title)) {
+            $title = ((string) $prefix).$title.((string) $suffix);
+        }
+
+        if (empty($title)) {
+            $title = Config::get('seo.defaults.title');
+        }
+
+        return $title;
     }
 
     public function setTitle(string $title)
@@ -49,9 +63,16 @@ class MetaManager
         return $this;
     }
 
+    public function hasDescription(): bool
+    {
+        return !empty($this->getDescription());
+    }
+
     public function getDescription(): ?string
     {
-        return ($this->seoable ? $this->seoable->getMetaDescription() : null) ?: $this->description;
+        $description = ($this->seoable ? $this->seoable->getMetaDescription() : null) ?: $this->description;
+
+        return $description ?: Config::get('seo.defaults.description');
     }
 
     public function setDescription(string $content)
@@ -60,9 +81,9 @@ class MetaManager
         return $this;
     }
 
-    public function hasDescription(): bool
+    public function getKeywordsAsString(): string
     {
-        return !empty($this->getDescription());
+        return implode(',', $this->getKeywords());
     }
 
     public function getKeywords(): array
@@ -75,11 +96,6 @@ class MetaManager
     {
         $this->keywords = $keywords;
         return $this;
-    }
-
-    public function getKeywordsAsString(): string
-    {
-        return implode(',', $this->getKeywords());
     }
 
     public function hasKeywords(): bool

@@ -5,6 +5,7 @@ namespace SoluzioneSoftware\SEO\Traits;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use SoluzioneSoftware\SEO\Models\SeoData;
 
@@ -18,12 +19,24 @@ trait HasSeoData
 
     public function getMetaTitle(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->meta_title : null;
+        $title = $this->current_locale_seo_data ? $this->current_locale_seo_data->meta_title : null;
+        return $title ?: $this->getDefaultSeoTitle();
+    }
+
+    protected function getDefaultSeoTitle(): ?string
+    {
+        return null;
     }
 
     public function getMetaDescription(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->meta_description : null;
+        $description = $this->current_locale_seo_data ? $this->current_locale_seo_data->meta_description : null;
+        return $description ?: $this->getDefaultSeoDescription();
+    }
+
+    protected function getDefaultSeoDescription(): ?string
+    {
+        return null;
     }
 
     public function getMetaKeywords(): array
@@ -33,32 +46,43 @@ trait HasSeoData
 
     public function getOpenGraphTitle(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->open_graph_title : null;
+        $title = $this->current_locale_seo_data ? $this->current_locale_seo_data->open_graph_title : null;
+        return $title ?: $this->getDefaultSeoTitle();
     }
 
     public function getOpenGraphDescription(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->open_graph_description : null;
+        $description = $this->current_locale_seo_data ? $this->current_locale_seo_data->open_graph_description : null;
+        return $description ?: $this->getDefaultSeoDescription();
     }
 
     public function getOpenGraphImages(): array
     {
-        return $this->current_locale_seo_data ? ($this->current_locale_seo_data->open_graph_images ?: []) : [];
+        $images = $this->current_locale_seo_data ? ($this->current_locale_seo_data->open_graph_images ?: []) : [];
+        return $images ?: $this->getDefaultSeoImages();
+    }
+
+    protected function getDefaultSeoImages(): array
+    {
+        return [];
     }
 
     public function getTwitterTitle(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_title : null;
+        $title = $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_title : null;
+        return $title ?: $this->getDefaultSeoTitle();
     }
 
     public function getTwitterDescription(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_description : null;
+        $description = $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_description : null;
+        return $description ?: $this->getDefaultSeoDescription();
     }
 
     public function getTwitterImage(): ?string
     {
-        return $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_image : null;
+        $image = $this->current_locale_seo_data ? $this->current_locale_seo_data->twitter_image : null;
+        return $image ?: Arr::first($this->getDefaultSeoImages());
     }
 
     public function getTwitterImageAlt(): ?string
