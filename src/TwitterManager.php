@@ -39,14 +39,31 @@ class TwitterManager
 
     public function getTitle(): string
     {
-        $seoableTitle = $this->seoable ? $this->seoable->getTwitterTitle() : null;
-        return $seoableTitle ? $seoableTitle : $this->title;
+        $title = ($this->seoable ? $this->seoable->getTwitterTitle() : null) ?: $this->title;
+
+        $prefix = Config::get('seo.title.prefix');
+        $suffix = Config::get('seo.title.suffix');
+
+        if (!empty($title)) {
+            $title = ((string) $prefix).$title.((string) $suffix);
+        }
+
+        if (empty($title)) {
+            $title = Config::get('seo.twitter.defaults.title', Config::get('seo.defaults.title'));
+        }
+
+        return $title;
     }
 
     public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
+    }
+
+    public function hasDescription(): bool
+    {
+        return !empty($this->getDescription());
     }
 
     public function getDescription(): ?string
@@ -60,9 +77,9 @@ class TwitterManager
         return $this;
     }
 
-    public function hasDescription(): bool
+    public function hasImage(): bool
     {
-        return !empty($this->getDescription());
+        return !empty($this->getImage());
     }
 
     public function getImage(): ?string
@@ -76,9 +93,9 @@ class TwitterManager
         return $this;
     }
 
-    public function hasImage(): bool
+    public function hasImageAlt(): bool
     {
-        return !empty($this->getImage());
+        return !empty($this->getImageAlt());
     }
 
     public function getImageAlt(): ?string
@@ -90,10 +107,5 @@ class TwitterManager
     {
         $this->imageAlt = $imageAlt;
         return $this;
-    }
-
-    public function hasImageAlt(): bool
-    {
-        return !empty($this->getImageAlt());
     }
 }

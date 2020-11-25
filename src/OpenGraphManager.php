@@ -57,8 +57,20 @@ class OpenGraphManager
 
     public function getTitle(): string
     {
-        $seoableTitle = $this->seoable ? $this->seoable->getOpenGraphTitle() : null;
-        return $seoableTitle ? $seoableTitle : $this->title;
+        $title = ($this->seoable ? $this->seoable->getOpenGraphTitle() : null) ?: $this->title;
+
+        $prefix = Config::get('seo.title.prefix');
+        $suffix = Config::get('seo.title.suffix');
+
+        if (!empty($title)) {
+            $title = ((string) $prefix).$title.((string) $suffix);
+        }
+
+        if (empty($title)) {
+            $title = Config::get('seo.open_graph.defaults.title', Config::get('seo.defaults.title'));
+        }
+
+        return $title;
     }
 
     public function setTitle(string $title): self
